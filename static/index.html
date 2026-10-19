@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Birkett MFR Program v2.1 - Wang 2200 / Niakwa BASIC-2 Terminal</title>
-  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body class="theme-green">
   <!-- Minimalist Dated Industrial System Header -->
   <header class="sys-topbar no-print">
     <div class="sys-brand">
-      <span class="sys-badge">WANG 2200 / NIAKWA BC 1.09</span>
+      <span class="sys-badge">WANG 2200 / NIAKWA BC 1.09 (JS)</span>
       <span class="sys-title">HAROLD BIRKETT MANUFACTURING REPORT SYSTEM (VER 2.1)</span>
     </div>
     <div class="sys-controls">
@@ -38,6 +38,13 @@
       <button type="button" class="retro-btn" id="btn-seed-raceland" title="Load Raceland Raw Sugar MRPARAMS from PLATTER1.BS2">
         Load PLATTER1.BS2 Preset
       </button>
+      <button type="button" class="retro-btn" id="btn-export-disk" title="Export virtual disk (MRPARAMS + D12 + D13) as a JSON file">
+        Export Disk (.JSON)
+      </button>
+      <button type="button" class="retro-btn" id="btn-import-disk" title="Import virtual disk (MRPARAMS + D12 + D13) from a JSON file">
+        Import Disk (.JSON)
+      </button>
+      <input type="file" id="file-import-disk" accept=".json,application/json" style="display:none" />
     </div>
   </header>
 
@@ -148,6 +155,7 @@
     </div>
   </div>
 
-  <script src="/static/app.js"></script>
+  <script src="mfr_engine.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

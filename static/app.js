@@ -1,6 +1,6 @@
 // =============================================================================
 // HAROLD BIRKETT'S MANUFACTURING REPORT PROGRAM (VERSION 2.1)
-// Minimalist Retro Wang 2200 CRT & Line Printer Web Client
+// 100% Client-Side Browser CRT Terminal & 132-Col Line Printer Controller
 // =============================================================================
 
 (function () {
@@ -25,6 +25,9 @@
   const btnReturnMenu = document.getElementById("btn-return-menu");
   const btnSeedStMary = document.getElementById("btn-seed-stmary");
   const btnSeedRaceland = document.getElementById("btn-seed-raceland");
+  const btnExportDisk = document.getElementById("btn-export-disk");
+  const btnImportDisk = document.getElementById("btn-import-disk");
+  const fileImportDisk = document.getElementById("file-import-disk");
 
   const selPrinterJob = document.getElementById("sel-printer-job");
   const chkGreenbar = document.getElementById("chk-greenbar");
@@ -38,6 +41,10 @@
   const modalTitle = document.getElementById("modal-title");
   const modalBody = document.getElementById("modal-body");
   const btnCloseModal = document.getElementById("btn-close-modal");
+
+  // Instantiate in-browser Wang 2200 / Niakwa BASIC-2 session
+  const session = new window.MFREngine.MFRSession();
+  window.mfrSession = session;
 
   // Local client state
   let latestPayload = null;
@@ -74,23 +81,6 @@
   }
 
   // ---------------------------------------------------------------------------
-  // API Helpers
-  // ---------------------------------------------------------------------------
-  async function apiGet(url) {
-    const res = await fetch(url, { cache: "no-store" });
-    return await res.json();
-  }
-
-  async function apiPost(url, data) {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data || {})
-    });
-    return await res.json();
-  }
-
-  // ---------------------------------------------------------------------------
   // State Rendering
   // ---------------------------------------------------------------------------
   function renderState(payload) {
@@ -102,27 +92,23 @@
     }
 
     // Top status rows
-    crtTopRow1.textContent = payload.top_bar_row1 || payload.status_row_1 || "";
-    crtTopRow3.textContent = payload.top_bar_row3 || payload.status_row_3 || "";
+    crtTopRow1.textContent = payload.top_bar_row1 || "";
+    crtTopRow3.textContent = payload.top_bar_row3 || "";
 
     // State badge & prompt
     lblStateBadge.textContent = "STATE: " + (payload.state || "MENU");
-    const promptTxt = payload.current_prompt || payload.prompt_label || "INPUT";
+    const promptTxt = payload.current_prompt || "INPUT";
     crtPromptLabel.textContent = promptTxt.endsWith("?") ? promptTxt : promptTxt + "?";
 
     // Strict mode checkbox sync
-    const strictVal =
-      typeof payload.strict_wang_mode === "boolean"
-        ? payload.strict_wang_mode
-        : payload.strict_mode;
-    if (typeof strictVal === "boolean") {
-      chkStrictMode.checked = strictVal;
+    if (typeof payload.strict_wang_mode === "boolean") {
+      chkStrictMode.checked = payload.strict_wang_mode;
     }
 
     // Metadata bar
     lblFactory.textContent = payload.factory_name || "---";
-    lblCropStart.textContent = payload.crop_start_date || payload.crop_start || "---";
-    lblDisk.textContent = payload.active_disk || payload.disk_unit || "D12";
+    lblCropStart.textContent = payload.crop_start_date || "---";
+    lblDisk.textContent = payload.active_disk || "D12";
 
     // Disk file tags
     renderDiskFiles(payload.disk_files || []);
@@ -150,7 +136,7 @@
     const paramsTag = document.createElement("span");
     paramsTag.className = "disk-file-tag";
     paramsTag.textContent = "MRPARAMS";
-    paramsTag.title = "Inspect MRPARAMS file on disk";
+    paramsTag.title = "Inspect MRPARAMS file on virtual disk";
     paramsTag.addEventListener("click", () => inspectDiskFile("MRPARAMS"));
     diskFilesList.appendChild(paramsTag);
 
@@ -280,16 +266,16 @@
   }
 
   // ---------------------------------------------------------------------------
-  // User Actions
+  // User Actions (100% Synchronous In-Browser Execution)
   // ---------------------------------------------------------------------------
-  async function submitUserInput(valueStr) {
-    const payload = await apiPost("/api/input", { input: valueStr });
+  function submitUserInput(valueStr) {
+    const payload = session.handleInput(valueStr);
     crtInput.value = "";
     renderState(payload);
   }
 
-  async function inspectDiskFile(name) {
-    const res = await apiGet("/api/disk_file/" + encodeURIComponent(name));
+  function inspectDiskFile(name) {
+    const res = session.getDiskFileContent(name);
     modalTitle.textContent = "VIRTUAL DISK INSPECTOR: " + name;
     modalBody.textContent = JSON.stringify(res, null, 2);
     diskModal.classList.remove("hidden");
@@ -321,38 +307,81 @@
   });
 
   // Strict mode toggle
-  chkStrictMode.addEventListener("change", async () => {
-    const payload = await apiPost("/api/action", {
+  chkStrictMode.addEventListener("change", () => {
+    const payload = session.handleAction({
       action: "toggle_strict",
-      strict: chkStrictMode.checked
+      strict: chkStrictMode.checked,
     });
     renderState(payload);
   });
 
   // Return to main menu
-  btnReturnMenu.addEventListener("click", async () => {
-    const payload = await apiPost("/api/action", { action: "reset_menu" });
+  btnReturnMenu.addEventListener("click", () => {
+    const payload = session.handleAction({ action: "reset_menu" });
     renderState(payload);
   });
 
   // Seed datasets
-  btnSeedStMary.addEventListener("click", async () => {
-    const payload = await apiPost("/api/action", { action: "seed_st_mary" });
+  btnSeedStMary.addEventListener("click", () => {
+    const payload = session.handleAction({ action: "seed_st_mary" });
     renderState(payload);
   });
 
-  btnSeedRaceland.addEventListener("click", async () => {
-    const payload = await apiPost("/api/action", { action: "seed_raceland" });
+  btnSeedRaceland.addEventListener("click", () => {
+    const payload = session.handleAction({ action: "seed_raceland" });
     renderState(payload);
   });
+
+  // Export virtual disk as .JSON file
+  if (btnExportDisk) {
+    btnExportDisk.addEventListener("click", () => {
+      const bundle = session.exportDiskBundle();
+      const blob = new Blob([JSON.stringify(bundle, null, 2)], {
+        type: "application/json;charset=utf-8",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Birkett_MFR_Virtual_Disk.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // Import virtual disk from .JSON file
+  if (btnImportDisk && fileImportDisk) {
+    btnImportDisk.addEventListener("click", () => {
+      fileImportDisk.value = "";
+      fileImportDisk.click();
+    });
+
+    fileImportDisk.addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const parsed = JSON.parse(String(ev.target.result));
+          const payload = session.importDiskBundle(parsed);
+          renderState(payload);
+        } catch (err) {
+          playTerminalBeep();
+          crtTopRow3.textContent = "DISK IMPORT ERROR: " + err.message;
+        }
+      };
+      reader.readAsText(file);
+    });
+  }
 
   // Batch print all Oct 2015 sample reports
-  btnBatchDemo.addEventListener("click", async () => {
+  btnBatchDemo.addEventListener("click", () => {
     btnBatchDemo.disabled = true;
     btnBatchDemo.textContent = "Generating Reports...";
     try {
-      const payload = await apiPost("/api/action", {
-        action: "quick_print_demo_pack"
+      const payload = session.handleAction({
+        action: "quick_print_demo_pack",
       });
       renderState(payload);
     } finally {
@@ -413,8 +442,8 @@
   });
 
   // Clear printer tray
-  btnClearPrinter.addEventListener("click", async () => {
-    const payload = await apiPost("/api/action", { action: "clear_printer" });
+  btnClearPrinter.addEventListener("click", () => {
+    const payload = session.handleAction({ action: "clear_printer" });
     renderState(payload);
   });
 
@@ -430,8 +459,6 @@
     }
   });
 
-  // Initial load
-  apiGet("/api/status").then(renderState).catch((err) => {
-    crtScreen.textContent = "ERROR CONNECTING TO LOCAL MFR SERVER: " + err;
-  });
+  // Initial load directly from in-browser session
+  renderState(session.getStatusPayload());
 })();

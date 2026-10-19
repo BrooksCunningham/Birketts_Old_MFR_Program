@@ -1,14 +1,8 @@
 @echo off
-title Harold Birkett's Manufacturing Report Program (Version 2.1)
-cd /d "%~dp0"
+title Harold Birkett's Manufacturing Report Program (Version 2.1) - Browser Edition
 echo ============================================================================
 echo   HAROLD BIRKETT'S MANUFACTURING REPORT PROGRAM (VERSION 2.1)
-echo   Wang 2200 BASIC-2 / Niakwa Legacy Remake - Web Application
+echo   100%% In-Browser JavaScript Edition (Wang 2200 / Niakwa BASIC-2)
+echo   Opening index.html in your default browser...
 echo ============================================================================
-echo.
-python "%~dp0app.py"
-if errorlevel 1 (
-    echo.
-    echo [ERROR] Python encountered an error or is not in PATH.
-    pause
-)
+start "" "%~dp0index.html"
