@@ -1,0 +1,242 @@
+[
+  {
+    "name": "MRSTART",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 980,
+    "end_sector": 1097,
+    "sectors": 118
+  },
+  {
+    "name": "MRSTOCK",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 1098,
+    "end_sector": 1100,
+    "sectors": 3
+  },
+  {
+    "name": "MRENCROP",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 665,
+    "end_sector": 691,
+    "sectors": 27
+  },
+  {
+    "name": "MRCALC",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 275,
+    "end_sector": 327,
+    "sectors": 53
+  },
+  {
+    "name": "BOILEREF",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 117,
+    "end_sector": 200,
+    "sectors": 84
+  },
+  {
+    "name": "MRDATACO",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 470,
+    "end_sector": 532,
+    "sectors": 63
+  },
+  {
+    "name": "MRPARAMS",
+    "type": "DATA",
+    "type_code": 0,
+    "start_sector": 738,
+    "end_sector": 751,
+    "sectors": 14
+  },
+  {
+    "name": "MRSTOCKC",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 1101,
+    "end_sector": 1129,
+    "sectors": 29
+  },
+  {
+    "name": "MRDACOWU",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 406,
+    "end_sector": 435,
+    "sectors": 30
+  },
+  {
+    "name": "MRCOMPPR",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 328,
+    "end_sector": 366,
+    "sectors": 39
+  },
+  {
+    "name": "MRCUSTOM",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 367,
+    "end_sector": 385,
+    "sectors": 19
+  },
+  {
+    "name": "MRCUSTPR",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 386,
+    "end_sector": 405,
+    "sectors": 20
+  },
+  {
+    "name": "MRDATAFM",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 533,
+    "end_sector": 571,
+    "sectors": 39
+  },
+  {
+    "name": "MRBLANFM",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 272,
+    "end_sector": 274,
+    "sectors": 3
+  },
+  {
+    "name": "MRHELPCX",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 728,
+    "end_sector": 732,
+    "sectors": 5
+  },
+  {
+    "name": "MRREPOPR",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 839,
+    "end_sector": 979,
+    "sectors": 141
+  },
+  {
+    "name": "MRDATAPR",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 607,
+    "end_sector": 636,
+    "sectors": 30
+  },
+  {
+    "name": "MRDATAWU",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 637,
+    "end_sector": 664,
+    "sectors": 28
+  },
+  {
+    "name": "BOILERE1",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 25,
+    "end_sector": 116,
+    "sectors": 92
+  },
+  {
+    "name": "MF-FIBER",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 201,
+    "end_sector": 271,
+    "sectors": 71
+  },
+  {
+    "name": "MRREPOCK",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 752,
+    "end_sector": 799,
+    "sectors": 48
+  },
+  {
+    "name": "MRSTOKFM",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 1158,
+    "end_sector": 1173,
+    "sectors": 16
+  },
+  {
+    "name": "MRDATA",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 436,
+    "end_sector": 469,
+    "sectors": 34
+  },
+  {
+    "name": "MRHELPS",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 733,
+    "end_sector": 737,
+    "sectors": 5
+  },
+  {
+    "name": "ROLLSURF",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 1203,
+    "end_sector": 1205,
+    "sectors": 3
+  },
+  {
+    "name": "MRREPOP2",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 800,
+    "end_sector": 838,
+    "sectors": 39
+  },
+  {
+    "name": "OLDSTOCK",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 1174,
+    "end_sector": 1202,
+    "sectors": 29
+  },
+  {
+    "name": "MRDATAP2",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 572,
+    "end_sector": 606,
+    "sectors": 35
+  },
+  {
+    "name": "MRHELPC",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 692,
+    "end_sector": 727,
+    "sectors": 36
+  },
+  {
+    "name": "MRSTOCKG",
+    "type": "PROGRAM",
+    "type_code": 128,
+    "start_sector": 1130,
+    "end_sector": 1157,
+    "sectors": 28
+  }
+]

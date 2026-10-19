@@ -1,0 +1,13 @@
+# Program: MRBLANFM | Compiler: BC Rev 1.01.00 | Sectors: 0x0110..0x0112
+0010: [d2]3[00][00]THIS PROGRAM SELECTS FORM TO BE PRINTED (MRBLANFM)w[00][00]
+0020: Z[01]X[03]005s[[07]S[01]Pv[[0a]S[01][00]vw[00][00]
+0030: [bc]X[09][03][0a][0a][0a][0a][0a][0a][0a][0a][a0][9f][b4]w[00][00]
+0040: [bc]X[1c]1    DAILY REPORT DATA FORMS[a5][9f][b4]w[00][00]
+0050: [bc]X[1c]2    STOCK REPORT DATA FORMS[a5][9f][b4]w[00][00]
+0060: [bc]X[04][0a][0a][0a][0a][a0][9f][b4]w[00][00]
+0070: g'[00]X[1f]WHICH FORMS DO YOU WANT PRINTED[a3]T[0f]J0[1e]w[00][00]
+0080: T[0f]JS[01][01]*[02][10][01]w[00][00]
+0090: T[0f]JS[01][02]*[02] [01]w[00][00]
+0100: i0[00]w[00][00]
+0110: S[01][00][be]X[08]MRDATAFMx[08][10][00][99][99][10][00]w[00][00]
+0120: S[01][00][be]X[08]MRSTOKFMx[08][10][00][99][99][10][00]w[00][00]

@@ -1,0 +1,12 @@
+# Program: MRSTOCK | Compiler: BC Rev 1.01.00 | Sectors: 0x044a..0x044c
+0010: [d2]3[00][00]PROGRAM TO SELECT UNITS FOR STOCK REPORT (MRSTOCK)w[00][00]
+0020: [bc]X[10][03][0a][0a][0a][0a][0a][0a][0a][0a][0a][0a][0a][0a][0a][0a][0a][a0][9f][b4]w[00][00]
+0030: [bc]X[12]STOCK CALCULATIONS[a5][9f][b4]w[00][00]
+0040: [bc]X[03][0a][0a][0a][a0][9f][b4]w[00][00]
+0050: gP[00]XHWILL MATERIALS IN PROCESS BE REPORTED IN GALLONS OR CUBIC FEET (G OR CF)[a3]Y[1f]J0 w[00][00]
+0060: Y[1f]JX[01]G,[02][00][01]w[00][00]
+0070: Y[1f]JX[02]CF,[02][10][01]w[00][00]
+0080: [bc]X[02][0a][0a][a0][9f][b4]w[00][00]
+0090: iP[00]w[00][00]
+0100: S[01][00][be]X[08]MRSTOCKGx[00][00][00][99][99][00][00]w[00][00]
+0110: S[01][00][be]X[08]MRSTOCKCx[00][00][00][99][99][00][00]w[00][00]

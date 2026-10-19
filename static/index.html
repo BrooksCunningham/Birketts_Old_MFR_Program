@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birkett MFR Program v2.1 - Wang 2200 / Niakwa BASIC-2 Terminal</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="theme-green">
+  <!-- Minimalist Dated Industrial System Header -->
+  <header class="sys-topbar no-print">
+    <div class="sys-brand">
+      <span class="sys-badge">WANG 2200 / NIAKWA BC 1.09</span>
+      <span class="sys-title">HAROLD BIRKETT MANUFACTURING REPORT SYSTEM (VER 2.1)</span>
+    </div>
+    <div class="sys-controls">
+      <label class="ctrl-item" title="In Strict Mode, pressing Enter on an empty prompt in Correct Data (Item 2) triggers RE-ENTER + Beep, just like Wang BASIC-2.">
+        <input type="checkbox" id="chk-strict-mode" />
+        <span>Strict Wang Input</span>
+      </label>
+
+      <label class="ctrl-item">
+        <span>CRT:</span>
+        <select id="sel-theme">
+          <option value="theme-green">Green Phosphor (Wang 2200)</option>
+          <option value="theme-amber">Amber Phosphor CRT</option>
+          <option value="theme-dos">Niakwa DOS (Blue/White)</option>
+          <option value="theme-win95">1995 Lab PC (Gray/Beige)</option>
+        </select>
+      </label>
+
+      <button type="button" class="retro-btn" id="btn-return-menu" title="Abort current routine and reload MRSTART">
+        LOAD "MRSTART"
+      </button>
+      <button type="button" class="retro-btn" id="btn-seed-stmary" title="Restore St. Mary Sugar Co-op Oct 2015 (Days 1-6) on Disk D12">
+        Reset Oct 2015 Demo Data
+      </button>
+      <button type="button" class="retro-btn" id="btn-seed-raceland" title="Load Raceland Raw Sugar MRPARAMS from PLATTER1.BS2">
+        Load PLATTER1.BS2 Preset
+      </button>
+    </div>
+  </header>
+
+  <!-- Disk & Factory Status Strip -->
+  <section class="status-strip no-print">
+    <div class="status-cell">
+      <strong>FACTORY:</strong> <span id="lbl-factory">ST. MARY SUGAR COOPERATIVE, INC.</span>
+    </div>
+    <div class="status-cell">
+      <strong>CROP START:</strong> <span id="lbl-crop-start">10/06/15</span>
+    </div>
+    <div class="status-cell">
+      <strong>ACTIVE DISK:</strong> <span id="lbl-disk">D12</span>
+    </div>
+    <div class="status-cell disk-files-cell">
+      <strong>FILES ON DISK:</strong>
+      <span id="disk-files-list"></span>
+    </div>
+  </section>
+
+  <!-- Main Dual-Hardware Workspace: 80-Col CRT Console + 132-Col Line Printer -->
+  <main class="workspace">
+    <!-- LEFT PANE: Device 005(80) CRT Terminal -->
+    <section class="crt-panel no-print" aria-label="80-Column CRT Terminal">
+      <div class="panel-header">
+        <span>SELECT PRINT 005(80) :: CRT CONSOLE</span>
+        <span id="lbl-state-badge" class="state-badge">STATE: MENU</span>
+      </div>
+
+      <div class="crt-bezel">
+        <!-- Wang 2200 AT(1,0) & AT(3,0) Pinned Status Rows -->
+        <div id="crt-top-row1" class="crt-pinned-row1"></div>
+        <div id="crt-top-row3" class="crt-pinned-row3"></div>
+
+        <!-- Scrollable 80-Col Screen Output -->
+        <pre id="crt-screen" class="crt-screen" tabindex="0"></pre>
+
+        <!-- Active BASIC INPUT / LINPUT Prompt Line -->
+        <form id="crt-input-form" class="crt-input-bar" autocomplete="off">
+          <span id="crt-prompt-label" class="crt-prompt-label">WHICH ITEM NUMBER DO YOU WANT?</span>
+          <input
+            type="text"
+            id="crt-input"
+            class="crt-input-field"
+            placeholder="Type value & press ENTER..."
+            autofocus
+          />
+          <button type="submit" class="retro-btn crt-enter-btn">RETURN &crarr;</button>
+        </form>
+      </div>
+
+      <!-- Quick-Key Helper Strip for Demonstrations -->
+      <div class="quick-keys-bar">
+        <span class="qk-title">QUICK KEYS:</span>
+        <button type="button" class="qk-btn" data-input="Y">Y</button>
+        <button type="button" class="qk-btn" data-input="N">N</button>
+        <button type="button" class="qk-btn" data-input="">[RETURN]</button>
+        <span class="qk-sep">|</span>
+        <span class="qk-title">OCT 2015 DATES:</span>
+        <button type="button" class="qk-btn" data-input="10/06/15">10/06/15 (Day 1)</button>
+        <button type="button" class="qk-btn" data-input="10/07/15">10/07/15 (Day 2)</button>
+        <button type="button" class="qk-btn" data-input="10/08/15">10/08/15 (Day 3)</button>
+        <button type="button" class="qk-btn" data-input="10/09/15">10/09/15 (Day 4)</button>
+        <button type="button" class="qk-btn" data-input="10/10/15">10/10/15 (Day 5)</button>
+        <button type="button" class="qk-btn" data-input="10/11/15">10/11/15 (Day 6)</button>
+      </div>
+    </section>
+
+    <!-- RIGHT PANE: Device 215(132) Continuous-Feed Line Printer -->
+    <section class="printer-panel" aria-label="132-Column Line Printer">
+      <div class="panel-header no-print">
+        <span>SELECT PRINT 215(132) :: 132-COL DOT-MATRIX LINE PRINTER</span>
+        <div class="printer-actions">
+          <label class="ctrl-item">
+            <input type="checkbox" id="chk-greenbar" checked />
+            <span>Green-Bar Paper</span>
+          </label>
+          <select id="sel-printer-job" class="retro-select" title="Select printed report in tray"></select>
+          <button type="button" class="retro-btn" id="btn-batch-demo" title="Print all 6 Daily Reports + Weekly Report #1">
+            Print All Oct 2015 Reports
+          </button>
+          <button type="button" class="retro-btn" id="btn-download-txt" title="Download current report as 132-column .TXT">
+            Save .TXT
+          </button>
+          <button type="button" class="retro-btn" id="btn-print-paper" title="Send current report to browser/system printer">
+            Print
+          </button>
+          <button type="button" class="retro-btn" id="btn-clear-printer" title="Tear off and clear printer output tray">
+            Clear Tray
+          </button>
+        </div>
+      </div>
+
+      <div id="printer-tray" class="printer-tray greenbar-on">
+        <!-- Rendered 132-column tractor-feed pages go here -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Retro Disk File Inspector Modal -->
+  <div id="disk-modal" class="modal-backdrop hidden no-print">
+    <div class="modal-window">
+      <div class="modal-header">
+        <span id="modal-title">DISK FILE INSPECTOR</span>
+        <button type="button" class="retro-btn" id="btn-close-modal">[X] CLOSE</button>
+      </div>
+      <pre id="modal-body" class="modal-body"></pre>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
